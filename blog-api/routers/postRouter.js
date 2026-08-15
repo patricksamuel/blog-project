@@ -12,6 +12,7 @@ const prisma = require("../prisma/client.js")
 
 router.get("/", postController.getPublishedPost)
 router.post("/",verifyToken, postController.newPost)
+router.get("/mine", verifyToken, postController.getMyPosts);
 router.get("/:id",verifyToken, postController.getPostById)
 router.patch("/:id",verifyToken,postController.publishPost)
 router.put("/:id",verifyToken,postController.updatePost)
