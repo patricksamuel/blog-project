@@ -6,6 +6,10 @@ const express = require("express")
 const app = express()
 const prisma = require("./prisma/client")
 app.use(express.json());
+const cors = require("cors");
+
+const allowedOrigins = process.env.CORS_ORIGINS?.split(",") || ["http://localhost:5173"];
+app.use(cors({ origin: allowedOrigins }));
 
 
 // ---------- 2. View engine ----------

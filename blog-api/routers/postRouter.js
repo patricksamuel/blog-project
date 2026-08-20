@@ -11,9 +11,10 @@ const postController = require("../controllers/postController.js")
 const prisma = require("../prisma/client.js")
 
 router.get("/", postController.getPublishedPost)
+router.delete("/mine",verifyToken,postController.getMyPost)
 router.post("/",verifyToken, postController.newPost)
 router.get("/mine", verifyToken, postController.getMyPosts);
-router.get("/:id",verifyToken, postController.getPostById)
+router.get("/:id",postController.getPostById)
 router.patch("/:id",verifyToken,postController.publishPost)
 router.put("/:id",verifyToken,postController.updatePost)
 router.delete("/:id",verifyToken,postController.deletePost)

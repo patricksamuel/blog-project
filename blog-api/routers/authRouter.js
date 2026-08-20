@@ -19,11 +19,11 @@ router.post('/signup', async (req,res, next)=>{
     try{
         console.log("signing up")
         console.log(req.body)
-        const {email,password} = req.body
+        const {email,password,name} = req.body
         console.log(email + password)
         const hash = await bcrypt.hash(password,10)
         const user = await prisma.user.create({
-            data : {email, password:hash},
+            data : {email, password:hash, name},
             omit: { password: true } 
         })
         res.status(201).json(user) // https://httpstatuses.io/
@@ -41,6 +41,7 @@ curl -X POST http://localhost:3000/api/auth/signup \
 
 router.post("/login", async (req,res, next)=>{
     try{
+
         const {email,password} = req.body
         const user = await prisma.user.findUnique({
             where: {email: email
@@ -53,6 +54,7 @@ router.post("/login", async (req,res, next)=>{
             const match = await bcrypt.compare(password, user.password)
             if(!match) {return res.status(401).json({error: "invalid credentials"});}
             const token = jwt.sign({sub : user.id},process.env.JWT_SECRET_KEY, {expiresIn: '3h'})
+            console.log("login success")
             res.json({token})
 
         }

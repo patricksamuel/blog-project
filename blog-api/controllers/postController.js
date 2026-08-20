@@ -17,6 +17,20 @@ exports.getPublishedPost = async (req,res,next) => {
     }
 }
 
+exports.getMyPost = async (req,res,next) => {
+    try{
+        const where = {owner_id : req.user.id}
+        const posts = await prisma.blogPost.findMany({
+            where,
+            orderBy : {addedAt :'desc'}
+        })
+
+        res.status(200).json(posts)
+    } catch(err){
+        next(err)
+    }
+}
+
 exports.newPost = async (req,res,next) => {
     try{
         const newpost = req.body.post
@@ -141,6 +155,15 @@ exports.deletePost  =  async (req,res,next) => {
     }
 }
 
+exports.getMyPosts = async (req, res, next) => {
+  try {
+    const posts = await prisma.blogPost.findMany({
+      where: { owner_id: req.user.id },       // mine — drafts included
+      orderBy: { addedAt: "desc" },
+    });
+    res.json(posts);
+  } catch (err) { next(err); }
+};
 
 
 

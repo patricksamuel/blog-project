@@ -22,6 +22,7 @@ model User {
   joinedAt DateTime @default(now())
   blogPosts  BlogPost[]
   role String @default("user") // admin or user or else. can be exapnded later keep it as tstring for now
+  name String? 
 
 }
 
